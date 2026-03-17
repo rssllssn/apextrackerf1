@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Profiles - APEX TRACKER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #15151e;
+            --surface: #ffffff;
+            --surface-hover: #f4f4f4;
+            --primary: #e10600;
+            --primary-glow: rgba(225, 6, 0, 0.4);
+            --text-main: #333333;
+            --text-highlight: #15151e;
+            --text-inverse: #ffffff;
+            --border: #d0d0d2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--surface);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-highlight);
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+            background-color: var(--bg-color);
+            padding: 1rem 2rem;
+            border-radius: 0 0 15px 15px;
+            margin-top: -2rem;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-inverse);
+            margin: 0;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-inverse);
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover {
+            color: var(--text-highlight);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active-nav {
+            color: var(--primary);
+        }
+
+        .nav-link.active-nav::after {
+            width: 100%;
+        }
+
+        /* Disclaimer banner */
+        .disclaimer-banner {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #0b0c10;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .disclaimer-banner p {
+            font-size: 0.75rem;
+            color: #828282;
+            margin: 0;
+        }
+
+        .disclaimer-banner a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .disclaimer-banner a:hover {
+            text-decoration: underline;
+        }
+
+        .view-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-top: 5px solid var(--bg-color);
+            border-right: 5px solid var(--primary);
+            border-top-right-radius: 15px;
+            padding-top: 1rem;
+            padding-right: 1rem;
+        }
+
+        .view-header h2 {
+            font-size: 2.5rem;
+            position: relative;
+            padding-left: 0;
+        }
+
+        select {
+            background-color: #f4f4f4;
+            color: var(--text-highlight);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid var(--primary);
+            border-bottom-right-radius: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .season-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .season-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-inverse);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .season-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .season-btn:hover {
+            color: var(--text-highlight);
+        }
+
+        .season-btn.active {
+            color: var(--primary);
+        }
+
+        .season-btn.active::after {
+            width: 100%;
+        }
+
+        .drivers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .driver-card {
+            background: var(--surface);
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-right: 5px solid var(--primary);
+            border-top: 5px solid var(--bg-color);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .driver-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .driver-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 2px solid var(--border);
+            overflow: hidden;
+        }
+
+        .driver-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .driver-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .driver-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-highlight);
+            margin-bottom: 5px;
+        }
+
+        .driver-team {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .driver-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .error {
+            background: rgba(225, 6, 0, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-inverse);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .filter-btn:hover {
+            color: var(--text-highlight);
+        }
+
+        .filter-btn:hover::after,
+        .filter-btn.active::after {
+            width: 100%;
+        }
+
+        .filter-btn.active {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                gap: 1rem;
+                border-radius: 0;
+                margin-top: 0;
+            }
+
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .view-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Floating GitHub Logo */
+        .github-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(225, 6, 0, 0.2);
+            text-decoration: none;
+        }
+
+        .github-float:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(225, 6, 0, 0.4);
+            background-color: var(--primary);
+        }
+
+        .github-float svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--primary);
+            transition: fill 0.3s ease;
+        }
+
+        .github-float:hover svg {
+            fill: var(--text-inverse);
+        }
+    </style>
+</head>
+<body>
+    <div class="disclaimer-banner">
+        <p>Unofficial F1 Tracker | Not affiliated with Formula 1 companies | Developed by <a href="https://github.com/rssllssn" target="_blank">rssllssn</a></p>
+    </div>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo">
+                <h1>APEX<span>TRACKER</span></h1>
+            </div>
+            <nav>
+                <a href="landing.html" class="nav-link">Home</a>
+                <a href="races.html" class="nav-link">Races</a>
+                <a href="standings.html" class="nav-link">Standings</a>
+                <a href="drivers.html" class="nav-link active-nav">Drivers</a>
+                <a href="teams.html" class="nav-link">Teams</a>
+                <a href="privacy-policy.html" class="nav-link">Privacy</a>
+                <a href="terms-of-service.html" class="nav-link">Terms</a>
+            </nav>
+        </header>
+
+        <section class="view-header">
+            <h2>Driver Profiles</h2>
+        </section>
+
+        <div class="season-selector" id="seasonSelector"></div>
+
+        <div class="filter-section" id="filterSection"></div>
+
+        <div class="drivers-grid" id="driversGrid">
+            <div class="loading">Loading drivers...</div>
+        </div>
+    </div>
+    </div>
+
+    <a href="https://github.com/rssllssn" target="_blank" class="github-float" title="Visit GitHub">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+    </a>
+
+    <script>
+        const CACHE_KEY = 'drivers_cache';
+        const CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+        let currentSeason = new Date().getFullYear();
+        let currentTeamFilter = null;
+        let driversData = {};
+
+        const seasons = [2023, 2024, 2025];
+
+        function initializeUI() {
+            renderSeasonSelector();
+        }
+
+        function renderSeasonSelector() {
+            const selector = document.getElementById('seasonSelector');
+            selector.innerHTML = seasons.map(season => `
+                <button class="season-btn ${season === currentSeason ? 'active' : ''}" 
+                        onclick="selectSeason(${season})">
+                    ${season}
+                </button>
+            `).join('');
+        }
+
+        function selectSeason(season) {
+            currentSeason = season;
+            currentTeamFilter = null;
+            loadDrivers();
+        }
+
+        async function loadDrivers() {
+            const grid = document.getElementById('driversGrid');
+            grid.innerHTML = '<div class="loading">Loading drivers...</div>';
+
+            try {
+                const cacheKey = `${CACHE_KEY}_${currentSeason}`;
+                const cached = localStorage.getItem(cacheKey);
+                const cacheTime = localStorage.getItem(`${cacheKey}_time`);
+
+                if (cached && cacheTime && Date.now() - parseInt(cacheTime) < CACHE_TTL) {
+                    driversData = JSON.parse(cached);
+                    renderDrivers();
+                    return;
+                }
+
+                const response = await fetch(`https://api.jolpi.ca/ergast/f1/${currentSeason}/drivers.json`);
+                const data = await response.json();
+
+                if (data.MRData && data.MRData.DriverTable && data.MRData.DriverTable.Drivers) {
+                    driversData = data.MRData.DriverTable.Drivers;
+                    localStorage.setItem(cacheKey, JSON.stringify(driversData));
+                    localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+                    renderDrivers();
+                } else {
+                    grid.innerHTML = '<div class="error">No drivers found for this season.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading drivers:', error);
+                grid.innerHTML = '<div class="error">Failed to load drivers. Please try again later.</div>';
+            }
+        }
+
+        function renderDrivers() {
+            const grid = document.getElementById('driversGrid');
+            const filterSection = document.getElementById('filterSection');
+
+            let drivers = driversData;
+
+            // Get unique teams
+            const teams = [...new Set(drivers.map(d => d.Constructors?.[0]?.name || 'Unknown'))];
+            
+            // Render team filters
+            filterSection.innerHTML = `
+                <button class="filter-btn ${!currentTeamFilter ? 'active' : ''}" onclick="filterByTeam(null)">
+                    All Teams
+                </button>
+                ${teams.map(team => `
+                    <button class="filter-btn ${currentTeamFilter === team ? 'active' : ''}" onclick="filterByTeam('${team}')">
+                        ${team}
+                    </button>
+                `).join('')}
+            `;
+
+            // Apply team filter
+            if (currentTeamFilter) {
+                drivers = drivers.filter(d => d.Constructors?.[0]?.name === currentTeamFilter);
+            }
+
+            // Sort by driver number
+            drivers.sort((a, b) => parseInt(a.permanentNumber || 0) - parseInt(b.permanentNumber || 0));
+
+            if (drivers.length === 0) {
+                grid.innerHTML = '<div class="error">No drivers found for the selected filter.</div>';
+                return;
+            }
+
+            grid.innerHTML = drivers.map(driver => `
+                <div class="driver-card">
+                    <div class="driver-image">
+                        <img src="https://media.formula1.com/content/dam/fom-website/drivers/${driver.driverId}.jpg" 
+                             alt="${driver.givenName} ${driver.familyName}"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div class="driver-number">${driver.permanentNumber || '—'}</div>
+                    <div class="driver-name">${driver.givenName} ${driver.familyName}</div>
+                    <div class="driver-team">${driver.Constructors?.[0]?.name || 'Unknown'}</div>
+                    <div class="driver-stats">
+                        <div class="stat">
+                            <div class="stat-label">DOB</div>
+                            <div class="stat-value">${new Date(driver.dateOfBirth).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Nationality</div>
+                            <div class="stat-value">${driver.nationality}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterByTeam(team) {
+            currentTeamFilter = team;
+            renderDrivers();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUI();
+            loadDrivers();
+        });
+    </script>
+</body>
+</html>

@@ -119,6 +119,39 @@ nav {
     width: 100%;
 }
 
+.nav-link {
+    color: var(--text-inverse);
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.nav-link:hover {
+    color: var(--text-highlight);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
 /* Views */
 .hidden {
     display: none !important;
